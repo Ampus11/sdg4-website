@@ -50,11 +50,3 @@ src/
     Logo.tsx         # Emblem SDG 4
     icons.tsx        # Ikon SVG minimal
 ```
-
-## Deploy
-
-Proyek terhubung ke **Vercel** menggunakan Vercel CLI:
-
-```bash
-vercel --prod --yes
-```
