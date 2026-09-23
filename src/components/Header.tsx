@@ -43,7 +43,7 @@ export default function Header() {
             href="/#kontak"
             className="focusable rounded-md bg-sdg-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sdg-700"
           >
-            Ikut beraksi
+            Kontak
           </a>
         </nav>
 
@@ -87,7 +87,7 @@ export default function Header() {
             onClick={() => setOpen(false)}
             className="focusable mt-4 block rounded-md bg-sdg-600 px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-sdg-700"
           >
-            Ikut beraksi
+            Kontak
           </a>
         </nav>
       )}
