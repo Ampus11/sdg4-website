@@ -47,7 +47,10 @@ Supabase). Kredensial database hanya hidup di sisi server.
    → Settings → **Environment Variables** (Production, Preview, Development).
    Untuk pengembangan lokal, salin ke `.env.local`.
 3. Jalankan skema tabel dari `db/schema.sql` di dashboard database
-   (tab **Query**).
+   (tab **Query**), atau otomatis lewat script:
+   ```bash
+   DATABASE_URL=... node scripts/setup-db.mjs
+   ```
 4. Putuskan re-deploy (Vercel CLI atau push ke `main`).
 
 ### Mengecek pesan masuk
@@ -76,6 +79,8 @@ src/
     icons.tsx        # Ikon SVG minimal
 db/
   schema.sql         # Skema tabel "pesan"
+scripts/
+  setup-db.mjs       # Jalankan skema ke DATABASE_URL
 .env.example         # Contoh variabel lingkungan yang dibutuhkan
 ```
 
