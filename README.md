@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SDG 4 Indonesia — Pendidikan Berkualitas untuk Semua
 
-## Getting Started
+Situs komunitas tentang **Tujuan Pembangunan Berkelanjutan (SDG) ke-4: Quality Education**. Dibangun dengan **Next.js 16 (App Router)** dan **Tailwind CSS 4**, dengan desain editorial yang responsif, nyaman dibaca, dan ramah aksesibilitas.
 
-First, run the development server:
+## Konten Halaman
+
+- **Beranda** — pesan inti SDG 4 & kutipan Ki Hajar Dewantara
+- **Tentang** — penjelasan tujuan & tiga prinsip utama
+- **Target** — sepuluh sasaran SDG 4 (4.1–4.c)
+- **Aksi** — langkah nyata yang bisa dilakukan pembaca
+- **Kontak** — formulir pesan (klien, validasi sederhana)
+
+## Teknologi
+
+| Bagian | Detail |
+| ------ | ------ |
+| Framework | Next.js 16 (Turbopack) |
+| Styling | Tailwind CSS 4 (CSS-first config di `globals.css`) |
+| Font | Geist (sans) & Fraunces (serif display) via `next/font` |
+| Bahasa | Indonesia |
+
+## Menjalankan di Lokal
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build & Lint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run lint
+```
 
-## Learn More
+## Struktur
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+  app/
+    globals.css      # Tema Tailwind (palet SDG 4)
+    layout.tsx       # Metadata, font, layout dasar
+    page.tsx         # Seluruh seksi halaman
+  components/
+    Header.tsx       # Navigasi (menu mobile responsif)
+    Footer.tsx       # Kaki halaman
+    ContactForm.tsx  # Form kontak (client)
+    Logo.tsx         # Emblem SDG 4
+    icons.tsx        # Ikon SVG minimal
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Proyek terhubung ke **Vercel** menggunakan Vercel CLI:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+vercel --prod --yes
+```
