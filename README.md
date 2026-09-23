@@ -65,16 +65,21 @@ Supabase). Kredensial database hanya hidup di sisi server.
   node scripts/export-pesan.mjs    # hasil: data/pesan.csv
   ```
 
-### Notifikasi email (Resend)
+### Notifikasi email (Gmail SMTP)
 
 Saat ada pesan baru, selain tersimpan di database, notifikasi email dikirim ke
-`lynxa4777@gmail.com` (ubah lewat env `NOTIF_EMAIL`).
+`lynxa4777@gmail.com` (ubah lewat env `NOTIF_EMAIL`) menggunakan **SMTP Gmail**
+dengan *App Password* — tidak butuh akun/domain tambahan.
 
-1. Daftar gratis di **https://resend.com** (disarankan pakai email
-   `lynxa4777@gmail.com` agar pengiriman default berfungsi).
-2. Buat **API Key** → salin (`rk_...`).
-3. Set env di Vercel: `RESEND_API_KEY`, `NOTIF_EMAIL`, dan opsional
-   `EMAIL_FROM`.
+Persiapan sekali saja (pada akun Gmail penerima):
+
+1. Nyalakan **2-Step Verification**: https://myaccount.google.com/security
+2. Buat **App Password**: https://myaccount.google.com/apppasswords
+   (nama bebas, mis. `sdg4-website`) → salin 16 karakter yang muncul.
+3. Set env di Vercel → Settings → **Environment Variables**:
+   - `SMTP_USER` = `lynxa4777@gmail.com`
+   - `SMTP_APP_PASSWORD` = kode 16 karakter tadi
+   - `NOTIF_EMAIL` = `lynxa4777@gmail.com`
 4. Re-deploy. Alur email berjalan otomatis tanpa mengubah kode.
 
 ### Struktur

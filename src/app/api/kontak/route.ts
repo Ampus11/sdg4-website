@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Pool } from "pg";
+import nodemailer from "nodemailer";
 
 /**
  * Endpoint POST /api/kontak
@@ -78,7 +79,7 @@ export async function POST(request: Request) {
       [nama, surel, pesan],
     );
 
-    // Notifikasi email (opsional) — aktif saat RESEND_API_KEY & NOTIF_EMAIL diset.
+    // Notifikasi email (opsional) — aktif saat SMTP_USER & SMTP_APP_PASSWORD diset.
     await kirimNotifikasi(nama, surel, pesan);
 
     return NextResponse.json({ ok: true }, { status: 201 });
@@ -101,61 +102,58 @@ function esc(value: string): string {
 }
 
 /**
- * Kirim notifikasi email via Resend API (tanpa SDK tambahan).
+ * Kirim notifikasi email via SMTP (Gmail App Password) menggunakan nodemailer.
  * Gagal mengirim email tidak menggagalkan penyimpanan pesan.
+ *
+ * Env yang dibutuhkan: SMTP_USER, SMTP_APP_PASSWORD, NOTIF_EMAIL.
+ * (Opsional: SMTP_HOST, SMTP_PORT — default smtp.gmail.com:465.)
  */
 async function kirimNotifikasi(nama: string, surel: string, pesan: string) {
-  const resendKey = process.env.RESEND_API_KEY;
+  const smtpUser = process.env.SMTP_USER;
+  const smtpPass = process.env.SMTP_APP_PASSWORD;
   const notifEmail = process.env.NOTIF_EMAIL;
-  if (!resendKey || !notifEmail) return;
-
-  const emailFrom =
-    process.env.EMAIL_FROM ?? "SDG 4 Indonesia <onboarding@resend.dev>";
+  if (!smtpUser || !smtpPass || !notifEmail) return;
 
   const waktu = new Date().toLocaleString("id-ID", {
     timeZone: "Asia/Jakarta",
   });
 
-  try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${resendKey}`,
-      },
-      body: JSON.stringify({
-        from: emailFrom,
-        to: [notifEmail],
-        subject: `💌 Pesan baru dari ${esc(nama)}`,
-        reply_to: surel,
-        html: `
-          <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1f1c19;">
-            <p style="font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #c5192d; margin: 0 0 12px;">SDG 4 Indonesia · Form Kontak</p>
-            <h2 style="margin: 0 0 16px;">Ada pesan baru 📩</h2>
-            <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
-              <tr>
-                <td style="padding: 8px 0; color: #6b635a; width: 90px;">Nama</td>
-                <td style="padding: 8px 0;"><strong>${esc(nama)}</strong></td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #6b635a;">Surel</td>
-                <td style="padding: 8px 0;"><strong>${esc(surel)}</strong></td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; color: #6b635a;">Waktu</td>
-                <td style="padding: 8px 0;">${esc(waktu)}</td>
-              </tr>
-            </table>
-            <div style="margin-top: 16px; padding: 16px; background: #f7f3ec; border-left: 3px solid #c5192d; border-radius: 4px; white-space: pre-wrap;">${esc(pesan)}</div>
-            <p style="margin-top: 24px; font-size: 12px; color: #6b635a;">Balas langsung ke: <a href="mailto:${esc(surel)}">${esc(surel)}</a></p>
-          </div>
-        `,
-      }),
-    });
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST ?? "smtp.gmail.com",
+    port: Number(process.env.SMTP_PORT ?? 465),
+    secure: Number(process.env.SMTP_PORT ?? 465) === 465,
+    auth: { user: smtpUser, pass: smtpPass },
+  });
 
-    if (!res.ok) {
-      console.error("Resend gagal:", await res.text());
-    }
+  try {
+    await transporter.sendMail({
+      from: `SDG 4 Indonesia <${smtpUser}>`,
+      to: notifEmail,
+      replyTo: surel,
+      subject: `💌 Pesan baru dari ${nama}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; color: #1f1c19;">
+          <p style="font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #c5192d; margin: 0 0 12px;">SDG 4 Indonesia · Form Kontak</p>
+          <h2 style="margin: 0 0 16px;">Ada pesan baru 📩</h2>
+          <table style="border-collapse: collapse; width: 100%; font-size: 14px;">
+            <tr>
+              <td style="padding: 8px 0; color: #6b635a; width: 90px;">Nama</td>
+              <td style="padding: 8px 0;"><strong>${esc(nama)}</strong></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #6b635a;">Surel</td>
+              <td style="padding: 8px 0;"><strong>${esc(surel)}</strong></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; color: #6b635a;">Waktu</td>
+              <td style="padding: 8px 0;">${esc(waktu)}</td>
+            </tr>
+          </table>
+          <div style="margin-top: 16px; padding: 16px; background: #f7f3ec; border-left: 3px solid #c5192d; border-radius: 4px; white-space: pre-wrap;">${esc(pesan)}</div>
+          <p style="margin-top: 24px; font-size: 12px; color: #6b635a;">Balas langsung ke: <a href="mailto:${esc(surel)}">${esc(surel)}</a></p>
+        </div>
+      `,
+    });
   } catch (err) {
     console.error("Gagal kirim notifikasi email:", err);
   }
