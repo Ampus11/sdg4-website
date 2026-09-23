@@ -60,6 +60,22 @@ Supabase). Kredensial database hanya hidup di sisi server.
   SELECT * FROM pesan ORDER BY dibuat_pada DESC;
   ```
 - Setiap pengiriman form juga terlihat di tab **Data**/**Rows** database.
+- Ekspor semua pesan ke CSV (dibuka dengan Excel):
+  ```bash
+  node scripts/export-pesan.mjs    # hasil: data/pesan.csv
+  ```
+
+### Notifikasi email (Resend)
+
+Saat ada pesan baru, selain tersimpan di database, notifikasi email dikirim ke
+`lynxa4777@gmail.com` (ubah lewat env `NOTIF_EMAIL`).
+
+1. Daftar gratis di **https://resend.com** (disarankan pakai email
+   `lynxa4777@gmail.com` agar pengiriman default berfungsi).
+2. Buat **API Key** → salin (`rk_...`).
+3. Set env di Vercel: `RESEND_API_KEY`, `NOTIF_EMAIL`, dan opsional
+   `EMAIL_FROM`.
+4. Re-deploy. Alur email berjalan otomatis tanpa mengubah kode.
 
 ### Struktur
 
