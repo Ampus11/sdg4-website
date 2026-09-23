@@ -5,7 +5,9 @@ import { Logo } from "@/components/Logo";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 
 const links = [
+  { href: "#beranda", label: "Beranda" },
   { href: "#tentang", label: "Tentang" },
+  { href: "/materi", label: "Materi" },
   { href: "#target", label: "Target" },
   { href: "#aksi", label: "Aksi" },
   { href: "#kontak", label: "Kontak" },

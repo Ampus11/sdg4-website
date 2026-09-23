@@ -286,6 +286,28 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Sampul perpustakaan materi */}
+        <section className="border-y border-line bg-paper">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:flex lg:items-center lg:justify-between lg:py-20">
+            <div className="max-w-2xl">
+              <p className="label-kicker">Perpustakaan Materi</p>
+              <h2 className="mt-4 font-serif text-3xl leading-tight tracking-tight text-ink sm:text-4xl">
+                Belajar itu hak semua orang — mulai dari sini, gratis.
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+                Modul dan bahan belajar dari jenjang SD sampai umum, bisa dibaca
+                langsung atau diunduh sebagai PDF.
+              </p>
+            </div>
+            <a
+              href="/materi"
+              className="focusable mt-8 inline-block shrink-0 rounded-md bg-sdg-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-sdg-700 lg:mt-0"
+            >
+              Jelajahi materi →
+            </a>
+          </div>
+        </section>
+
         {/* Kutipan */}
         <aside className="bg-sdg-600" aria-label="Kutipan">
           <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:py-24">

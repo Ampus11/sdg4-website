@@ -2,6 +2,7 @@ import { Logo } from "@/components/Logo";
 
 const links = [
   { href: "#tentang", label: "Tentang" },
+  { href: "/materi", label: "Materi" },
   { href: "#target", label: "Target" },
   { href: "#aksi", label: "Aksi" },
   { href: "#kontak", label: "Kontak" },
@@ -70,6 +71,12 @@ export default function Footer() {
             Materi edukasi — bukan afiliasi resmi PBB. Dibangun dengan Next.js
             &amp; Tailwind CSS.
           </p>
+          <a
+            href="/admin"
+            className="focusable text-ink-soft/50 transition-colors hover:text-ink-soft"
+          >
+            Panel admin
+          </a>
         </div>
       </div>
     </footer>

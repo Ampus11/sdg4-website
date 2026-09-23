@@ -5,6 +5,10 @@ Situs komunitas tentang **Tujuan Pembangunan Berkelanjutan (SDG) ke-4: Quality E
 ## Konten Halaman
 
 - **Beranda** — pesan inti SDG 4 & kutipan Ki Hajar Dewantara
+- **Materi** (`/materi`) — perpustakaan materi belajar: daftar, pencarian,
+  filter jenjang/kategori, halaman baca, dan unduh PDF
+- **Admin** (`/admin`) — panel login: kelola materi (tambah/edit/hapus) + lihat
+  pesan masuk
 - **Tentang** — penjelasan tujuan & tiga prinsip utama
 - **Target** — sepuluh sasaran SDG 4 (4.1–4.c)
 - **Aksi** — langkah nyata yang bisa dilakukan pembaca
@@ -53,6 +57,30 @@ Supabase). Kredensial database hanya hidup di sisi server.
    ```
 4. Putuskan re-deploy (Vercel CLI atau push ke `main`).
 
+### Panel Admin dan Perpustakaan Materi
+
+Website memiliki alur sistem dua arah:
+
+- **Publik**: `GET /materi` (daftar + cari + filter) dan `GET /materi/[slug]`
+  (baca + unduh PDF). Data langsung dirender dari database.
+- **Admin**: `POST /api/login` (set cookie sesi httpOnly), lalu
+  `POST /api/materi`, `PUT /api/materi/[id]`, `DELETE /api/materi/[id]`
+  (kelola materi), dan `GET /api/pesan-admin` (lihat pesan).
+
+Persiapan admin:
+
+1. Set `ADMIN_PASSWORD` di Vercel → Settings → **Environment Variables**
+   (Production, Preview, Development) — inilah password login `/admin`.
+2. Isi tabel `materi` dengan contoh (sekali saja, jika masih kosong):
+   ```bash
+   DATABASE_URL=... node scripts/seed-materi.mjs
+   ```
+3. Opsional: buat ulang PDF sampel yang bisa diunduh:
+   ```bash
+   node scripts/make-pdfs.mjs    # hasil: public/materi/*.pdf
+   ```
+4. Deploy. Alur login → CRUD → tampil di publik berjalan otomatis.
+
 ### Mengecek pesan masuk
 
 - **Dashboard Vercel** → proyek → **Storage** → *Query*, lalu:
@@ -87,21 +115,39 @@ Persiapan sekali saja (pada akun Gmail penerima):
 ```
 src/
   app/
-    globals.css      # Tema Tailwind (palet SDG 4)
-    layout.tsx       # Metadata, font, layout dasar
-    page.tsx         # Seluruh seksi halaman
-    api/kontak/
-      route.ts       # Endpoint backend: validasi + simpan ke database
+    globals.css       # Tema Tailwind (palet SDG 4)
+    layout.tsx        # Metadata, font, layout dasar
+    page.tsx          # Beranda (landing editorial) + CTA Materi
+    materi/
+      page.tsx        # /materi — daftar + cari + filter (server-render)
+      [slug]/page.tsx # /materi/[slug] — baca + unduh PDF
+    admin/page.tsx    # /admin — login + kelola materi + lihat pesan
+    api/
+      kontak/route.ts        # POST — simpan pesan kontak + notif email
+      login/route.ts         # POST — login admin (cookie httpOnly)
+      logout/route.ts        # POST — logout admin
+      sesi/route.ts          # GET — status login (dipakai /admin)
+      pesan-admin/route.ts   # GET — daftar pesan (khusus admin)
+      materi/route.ts        # GET publik + POST admin (tambah)
+      materi/[id]/route.ts   # PUT/DELETE admin (edit & hapus)
   components/
     Header.tsx       # Navigasi (menu mobile responsif)
-    Footer.tsx       # Kaki halaman
+    Footer.tsx       # Kaki halaman (+ tautan admin halus)
     ContactForm.tsx  # Form kontak (client) → POST /api/kontak
     Logo.tsx         # Emblem SDG 4
     icons.tsx        # Ikon SVG minimal
+  lib/
+    db.ts            # Akses pool PostgreSQL (satu-satunya sumber)
+    auth.ts          # Sesi cookie admin (HMAC)
+    materi.ts        # Validasi & slug materi
+public/materi/       # PDF materi sampel (dihasilkan scripts/make-pdfs.mjs)
 db/
-  schema.sql         # Skema tabel "pesan"
+  schema.sql         # Skema tabel "pesan" + "materi"
 scripts/
   setup-db.mjs       # Jalankan skema ke DATABASE_URL
+  seed-materi.mjs    # Isi contoh materi (jika kosong)
+  make-pdfs.mjs      # Generate PDF sampel → public/materi/
+  export-pesan.mjs   # Ekspor pesan ke data/pesan.csv
 .env.example         # Contoh variabel lingkungan yang dibutuhkan
 ```
 
