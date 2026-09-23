@@ -316,10 +316,10 @@ export default function Home() {
                 <li className="flex items-center gap-3">
                   <MailIcon className="h-4 w-4 shrink-0 text-sdg-600" />
                   <a
-                    href="mailto:halo@sdg4indonesia.id"
+                    href="mailto:lynxa4777@gmail.com"
                     className="focusable text-ink-soft underline decoration-sdg-300 underline-offset-4 transition-colors hover:text-sdg-700"
                   >
-                    halo@sdg4indonesia.id
+                    lynxa4777@gmail.com
                   </a>
                 </li>
                 <li className="flex items-center gap-3">

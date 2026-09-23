@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { CheckIcon } from "@/components/icons";
 
-type Status = "idle" | "sending" | "done";
+type Status = "idle" | "sending" | "done" | "error";
 
 const inputClasses =
   "w-full rounded-md border border-line bg-white px-4 py-3 text-ink placeholder:text-ink-soft/60 focus:border-sdg-600 focus:outline-none focus:ring-2 focus:ring-sdg-200";
@@ -16,8 +16,9 @@ export default function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState<string | null>(null);
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
     if (
       nama.trim().length < 2 ||
       !/^\S+@\S+\.\S+$/.test(surel) ||
@@ -26,10 +27,25 @@ export default function ContactForm() {
       setError("Pastikan nama terisi, surel valid, dan pesan lebih dari 10 karakter.");
       return;
     }
+
     setError(null);
     setStatus("sending");
-    // Simulasi pengiriman — ganti dengan API/email service saat dihubungkan.
-    window.setTimeout(() => setStatus("done"), 900);
+
+    try {
+      const res = await fetch("/api/kontak", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nama: nama.trim(), surel: surel.trim(), pesan: pesan.trim() }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Gagal mengirim, coba lagi nanti.");
+      }
+      setStatus("done");
+    } catch {
+      setStatus("idle");
+      setError("Terjadi kendala teknis. Silakan coba beberapa saat lagi.");
+    }
   }
 
   if (status === "done") {
@@ -40,8 +56,8 @@ export default function ContactForm() {
         </span>
         <h3 className="font-serif text-2xl text-ink">Pesanmu terkirim.</h3>
         <p className="text-sm leading-relaxed text-ink-soft">
-          Terima kasih sudah ikut bergerak. Kami akan membalas secepatnya —
-          biasanya dalam 2–3 hari kerja.
+          Terima kasih sudah ikut bergerak. Pesanmu sudah tersimpan dan akan
+          kami baca secepatnya.
         </p>
         <button
           type="button"
