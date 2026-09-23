@@ -16,19 +16,23 @@ export async function GET(request: Request) {
     const pool = getPool();
     const kondisi: string[] = [];
     const nilai: unknown[] = [];
+    let i = 1;
     if (q) {
       kondisi.push(
-        "(judul ILIKE $x OR ringkasan ILIKE $x OR isi ILIKE $x OR kategori ILIKE $x)",
+        `(judul ILIKE $${i} OR ringkasan ILIKE $${i} OR isi ILIKE $${i} OR kategori ILIKE $${i})`,
       );
       nilai.push(`%${q}%`);
+      i++;
     }
     if (jenjang) {
-      kondisi.push("jenjang = $x");
+      kondisi.push(`jenjang = $${i}`);
       nilai.push(jenjang);
+      i++;
     }
     if (kategori) {
-      kondisi.push("kategori = $x");
+      kondisi.push(`kategori = $${i}`);
       nilai.push(kategori);
+      i++;
     }
     const where = kondisi.length ? `WHERE ${kondisi.join(" AND ")}` : "";
     const sql = `SELECT id, slug, judul, ringkasan, jenjang, kategori, dibuat_pada
