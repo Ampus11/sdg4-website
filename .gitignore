@@ -37,6 +37,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# data pesan ekspor (privasi — jangan di-push ke repo)
+/data/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
