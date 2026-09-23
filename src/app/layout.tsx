@@ -15,7 +15,7 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sdg4-indonesia.vercel.app"),
+  metadataBase: new URL("https://sdg4-website.vercel.app"),
   title: {
     default: "SDG 4 — Pendidikan Berkualitas untuk Semua",
     template: "%s · SDG 4 Indonesia",
