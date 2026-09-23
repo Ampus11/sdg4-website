@@ -5,12 +5,12 @@ import { Logo } from "@/components/Logo";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 
 const links = [
-  { href: "#beranda", label: "Beranda" },
-  { href: "#tentang", label: "Tentang" },
+  { href: "/#beranda", label: "Beranda" },
+  { href: "/#tentang", label: "Tentang" },
   { href: "/materi", label: "Materi" },
-  { href: "#target", label: "Target" },
-  { href: "#aksi", label: "Aksi" },
-  { href: "#kontak", label: "Kontak" },
+  { href: "/#target", label: "Target" },
+  { href: "/#aksi", label: "Aksi" },
+  { href: "/#kontak", label: "Kontak" },
 ];
 
 export default function Header() {
@@ -20,8 +20,8 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a
-          href="#beranda"
-          aria-label="SDG 4 Indonesia — kembali ke atas"
+          href="/#beranda"
+          aria-label="SDG 4 Indonesia — kembali ke beranda"
           className="focusable"
         >
           <Logo />
@@ -41,7 +41,7 @@ export default function Header() {
             </a>
           ))}
           <a
-            href="#kontak"
+            href="/#kontak"
             className="focusable rounded-md bg-sdg-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-sdg-700"
           >
             Ikut beraksi
@@ -84,7 +84,7 @@ export default function Header() {
             ))}
           </ul>
           <a
-            href="#kontak"
+            href="/#kontak"
             onClick={() => setOpen(false)}
             className="focusable mt-4 block rounded-md bg-sdg-600 px-4 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-sdg-700"
           >

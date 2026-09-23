@@ -1,11 +1,11 @@
 import { Logo } from "@/components/Logo";
 
 const links = [
-  { href: "#tentang", label: "Tentang" },
+  { href: "/#tentang", label: "Tentang" },
   { href: "/materi", label: "Materi" },
-  { href: "#target", label: "Target" },
-  { href: "#aksi", label: "Aksi" },
-  { href: "#kontak", label: "Kontak" },
+  { href: "/#target", label: "Target" },
+  { href: "/#aksi", label: "Aksi" },
+  { href: "/#kontak", label: "Kontak" },
 ];
 
 export default function Footer() {

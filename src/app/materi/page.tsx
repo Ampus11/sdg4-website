@@ -77,7 +77,13 @@ export default async function MateriPage({
     <main className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
       {/* Kepala halaman */}
       <header className="max-w-3xl">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-sdg-600">
+        <a
+          href="/#beranda"
+          className="focusable text-sm text-sdg-600 hover:underline"
+        >
+          ← Kembali ke Beranda
+        </a>
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.22em] text-sdg-600">
           Tujuan 4 · Pendidikan Berkualitas
         </p>
         <h1 className="font-serif text-4xl leading-tight text-ink sm:text-5xl">
