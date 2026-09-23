@@ -10,7 +10,6 @@ const links = [
   { href: "/materi", label: "Materi" },
   { href: "/#target", label: "Target" },
   { href: "/#aksi", label: "Aksi" },
-  { href: "/#kontak", label: "Kontak" },
 ];
 
 export default function Header() {
